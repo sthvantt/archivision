@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArchiVision - Наши услуги</title>
+
+    <!-- Подключаем стили -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            overflow-x: hidden;
+            padding-top: 80px; /* Добавлено для фиксированного меню */
+        }
+        /* Фиксированная панель навигации */
+        .fixed-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            padding: 15px 0;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Шапка с картинкой */
+        .header {
+            position: relative;
+            height: 50vh;
+            width: 100%;
+            overflow: hidden;
+            margin-top: -80px; /* Компенсация фиксированного меню */
+        }
+
+        .header-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* Логотип */
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-img {
+            height: 60px;
+            width: auto;
+            margin-right: 15px;
+        }
+
+        .logo-text {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        /* Кнопки авторизации */
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .auth-btn {
+            padding: 8px 20px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .login-btn {
+            background-color: transparent;
+            border: 2px solid white;
+            color: white;
+        }
+
+        .login-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .register-btn {
+            background-color: #4873d1;
+            border: 2px solid #4873d1;
+            color: #ffffff;
+        }
+
+        .register-btn:hover {
+            background-color: #3a62b0;
+            border-color: #3a62b0;
+        }
+
+        /* Горизонтальное меню в шапке */
+        .header-menu {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.432);
+            padding: 15px 0;
+        }
+
+        .menu-list {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            flex-wrap: wrap;
+        }
+
+        .menu-list li {
+            margin: 0 15px;
+        }
+
+        .menu-list a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: color 0.3s;
+        }
+
+        .menu-list a:hover {
+            color: #4873d1;
+        }
+
+        .header-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.4);
+            padding: 0 20px;
+        }
+
+        .header-title {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .header-subtitle {
+            font-size: 1.5rem;
+            max-width: 800px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        
+        /* Основной контент */
+        .services-container {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+        
+        .services-intro {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .services-intro h2 {
+            font-size: 2.2rem;
+            color: #4873d1;
+            margin-bottom: 20px;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 40px;
+        }
+        
+        .service-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+        
+        .service-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .service-content {
+            padding: 25px;
+        }
+        
+        .service-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #4873d1;
+        }
+        
+        .service-description {
+            color: #424242;
+            margin-bottom: 20px;
+        }
+        
+        .service-features {
+            margin-bottom: 20px;
+        }
+        
+        .service-features li {
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 25px;
+            list-style-type: none;
+        }
+        
+        .service-features li::before {
+            content: "•";
+            color: #4873d1;
+            position: absolute;
+            left: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .service-price {
+            font-weight: bold;
+            color: #4873d1;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+        
+        .service-btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background: #4873d1;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        
+        .service-btn:hover {
+            background: #2e4679;
+        }
+        
+        /* Блок дополнительных услуг */
+        .additional-services {
+            margin-top: 80px;
+            background: #c4d9ff;
+            padding: 50px;
+            border-radius: 8px;
+        }
+        
+        .additional-services h2 {
+            text-align: center;
+            color: #4873d1;
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
+        
+        /* Подвал */
+        footer {
+            background: #1a1a1a;
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            text-align: left;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .footer-logo-img {
+            height: 40px;
+            margin-right: 15px;
+        }
+
+        .footer-logo-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .footer-links h3 {
+            color: #4873d1;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .copyright {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+            color: #999;
+        }
+
+        /* Горизонтальное меню в шапке */
+        .header-menu {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.432);
+            padding: 15px 0;
+        }
+
+        .menu-list {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            flex-wrap: wrap;
+        }
+
+        .menu-list li {
+            margin: 0 15px;
+        }
+
+        .menu-list a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: color 0.3s;
+        }
+
+        .menu-list a:hover {
+            color: #4873d1;
+        }
+
+        .header-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.4);
+            padding: 0 20px;
+        }
+
+        .header-title {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .header-subtitle {
+            font-size: 1.5rem;
+            max-width: 800px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .header {
+                padding: 80px 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .top-nav {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px 20px;
+            }
+            
+            .nav-links {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .additional-services {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+
+    <!-- Font Awesome для иконок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> 
+</head>
+<body>
+
+<!-- Логотип и навигация -->
+<nav class="fixed-nav">
+    <div class="nav-container">
+        <div class="logo">
+            <img src="images/logo.png" alt="ArchiVision Logo" class="logo-img">
+            <div class="logo-text">Arch Vision Design</div>
+        </div>
+        <div class="auth-buttons" id="authButtons">
+            <!-- Кнопки будут подставлены через JS -->
+        </div>
+    </div>
+</nav>
+
+<!-- Шапка страницы -->
+<header class="header">
+    <img src="https://images.unsplash.com/photo-1487958449943-2429e8be8625?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80"
+         alt="Архитектурный фон" class="header-image">
+    <div class="header-content">
+        <h1 class="header-title">Наши услуги</h1>
+        <p class="header-subtitle">Профессиональные решения для ваших архитектурных задач</p>
+    </div>
+
+    <!-- Горизонтальное меню в шапке -->
+    <nav class="header-menu">
+        <ul class="menu-list">
+            <li><a href="index.html">Главная</a></li>
+            <li><a href="progekt.html">Проекты</a></li>
+            <li><a href="uslugi.html">Услуги</a></li>
+            <li><a href="onas.html">О студии</a></li>
+            <li><a href="#contacts">Контакты</a></li> 
+        </ul>
+    </nav>
+</header>
+
+<!-- Основной контент -->
+<!-- Основной контент -->
+    <main class="services-container">
+        <section class="services-intro">
+            <h2>Комплексные архитектурные услуги</h2>
+            <p>Мы предлагаем полный цикл проектирования от концепции до реализации. Наши специалисты помогут воплотить ваши идеи в жизнь с учетом всех технических и эстетических требований.</p>
+        </section>
+        
+        <section class="services-grid">
+            <!-- Услуга 1 -->
+            <article class="service-card">
+                <img src="https://avatars.mds.yandex.net/i?id=22d09d6a060e4b221ba3918bdf4a3f16_l-4987768-images-thumbs&n=13" 
+                     alt="Архитектурное проектирование" class="service-image">
+                <div class="service-content">
+                    <h3 class="service-title">Архитектурное проектирование</h3>
+                    <p class="service-description">
+                        Полный комплекс проектных работ от эскиза до рабочей документации.
+                    </p>
+                    <ul class="service-features">
+                        <li>Разработка концепции</li>
+                        <li>3D-визуализация</li>
+                        <li>Рабочие чертежи</li>
+                        <li>Авторский надзор</li>
+                    </ul>
+                    <div class="service-price">от 3 000 руб/м²</div>
+                    <a href="./zakaz-uslugi.html" class="service-btn">Заказать услугу</a>
+                </div>
+            </article>
+            
+            <!-- Услуга 2 -->
+            <article class="service-card">
+                <img src="https://i0.wp.com/soyuz-dom.ru/wp-content/uploads/c/9/3/c93ebdca3cabb079d1ba49a5b29709f3.webp?ssl=1" 
+                     alt="Дизайн интерьеров" class="service-image">
+                <div class="service-content">
+                    <h3 class="service-title">Дизайн интерьеров</h3>
+                    <p class="service-description">
+                        Создание функциональных и эстетичных пространств для жизни и работы.
+                    </p>
+                    <ul class="service-features">
+                        <li>Планировочные решения</li>
+                        <li>Подбор материалов</li>
+                        <li>3D-визуализация</li>
+                        <li>Авторский надзор</li>
+                    </ul>
+                    <div class="service-price">от 2 500 руб/м²</div>
+                    <a href="./zakaz-uslugi.html" class="service-btn">Заказать услугу</a>
+                </div>
+            </article>
+            
+            <!-- Услуга 3 -->
+            <article class="service-card">
+                <img src="https://avatars.mds.yandex.net/i?id=6c45817a0a0c00faf002e183ebb432a6_l-9842590-images-thumbs&n=13" 
+                     alt="Ландшафтный дизайн" class="service-image">
+                <div class="service-content">
+                    <h3 class="service-title">Ландшафтный дизайн</h3>
+                    <p class="service-description">
+                        Гармоничная организация внешнего пространства вашего участка.
+                    </p>
+                    <ul class="service-features">
+                        <li>Зонирование территории</li>
+                        <li>Подбор растений</li>
+                        <li>Системы полива</li>
+                        <li>Декоративные элементы</li>
+                    </ul>
+                    <div class="service-price">от 1 500 руб/сотка</div>
+                    <a href="./zakaz-uslugi.html" class="service-btn">Заказать услугу</a>
+                </div>
+            </article>
+            
+            <!-- Услуга 4 -->
+            <article class="service-card">
+                <img src="https://avatars.mds.yandex.net/i?id=5f2739ab305ad6b8218f92ec8ce152fb_l-5285824-images-thumbs&n=13" 
+                     alt="Реконструкция зданий" class="service-image">
+                <div class="service-content">
+                    <h3 class="service-title">Реконструкция зданий</h3>
+                    <p class="service-description">
+                        Модернизация и перепланировка существующих зданий с сохранением их ценности.
+                    </p>
+                    <ul class="service-features">
+                        <li>Техническое обследование</li>
+                        <li>Разработка проекта</li>
+                        <li>Усиление конструкций</li>
+                        <li>Согласование</li>
+                    </ul>
+                    <div class="service-price">от 4 000 руб/м²</div>
+                    <a href="./zakaz-uslugi.html" class="service-btn">Заказать услугу</a>
+                </div>
+            </article>
+            
+            <!-- Услуга 5 -->
+            <article class="service-card">
+                <img src="https://avatars.mds.yandex.net/i?id=f15362a974ac0d664f61fd27fcb1fdd3_l-7749798-images-thumbs&n=13" 
+                     alt="BIM-проектирование" class="service-image">
+                <div class="service-content">
+                    <h3 class="service-title">BIM-проектирование</h3>
+                    <p class="service-description">
+                        Информационное моделирование зданий для комплексного управления проектом.
+                    </p>
+                    <ul class="service-features">
+                        <li>3D-моделирование</li>
+                        <li>Конфликт-анализ</li>
+                        <li>Сметные расчеты</li>
+                        <li>Управление жизненным циклом</li>
+                    </ul>
+                    <div class="service-price">от 5 000 руб/м²</div>
+                    <a href="./zakaz-uslugi.html" class="service-btn">Заказать услугу</a>
+                </div>
+            </article>
+            
+            <!-- Услуга 6 -->
+            <article class="service-card">
+                <img src="https://p1.zoon.ru/preview/FXT50aOOFZYaDakLYb3f_w/2400x1500x75/1/b/f/original_60ddada72141ea466e4e4467_626db1faaa6a47.10008055.jpg" 
+                     alt="Авторский надзор" class="service-image">
+                <div class="service-content">
+                    <h3 class="service-title">Авторский надзор</h3>
+                    <p class="service-description">
+                        Контроль за реализацией проекта на всех этапах строительства.
+                    </p>
+                    <ul class="service-features">
+                        <li>Регулярные выезды</li>
+                        <li>Контроль качества</li>
+                        <li>Корректировка проекта</li>
+                        <li>Отчетность</li>
+                    </ul>
+                    <div class="service-price">от 1% от стоимости строительства</div>
+                    <a href="./zakaz-uslugi.html" class="service-btn">Заказать услугу</a>
+                </div>
+            </article>
+        </section>
+        
+        <!-- Дополнительные услуги -->
+        <section class="additional-services">
+            <h2>Дополнительные услуги</h2>
+            <div class="services-grid">
+                <article class="service-card">
+                    <div class="service-content">
+                        <h3 class="service-title">Техническое задание</h3>
+                        <p class="service-description">
+                            Профессиональная разработка технического задания для вашего проекта.
+                        </p>
+                        <div class="service-price">от 50 000 руб</div>
+                    </div>
+                </article>
+                
+                <article class="service-card">
+                    <div class="service-content">
+                        <h3 class="service-title">Строительные консультации</h3>
+                        <p class="service-description">
+                            Экспертные консультации по вопросам строительства и ремонта.
+                        </p>
+                        <div class="service-price">от 3 000 руб/час</div>
+                    </div>
+                </article>
+                
+                <article class="service-card">
+                    <div class="service-content">
+                        <h3 class="service-title">Согласование проектов</h3>
+                        <p class="service-description">
+                            Помощь в прохождении всех инстанций и получении разрешений.
+                        </p>
+                        <div class="service-price">от 100 000 руб</div>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Подвал -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-about">
+                <div class="footer-logo">
+                    <img src="images/logo.png" alt="Arch Vision Design" class="footer-logo-img">
+                    <div class="footer-logo-text">Arch Vision Design</div>
+                </div>
+                <p>Профессиональные архитектурные решения с 2010 года. Создаем пространства, которые вдохновляют.</p>
+            </div>
+            
+            <div class="footer-links">
+                <h3 id="contacts">Контакты</h3>
+                <ul>
+                    <li><i class="fas fa-map-marker-alt"></i> г. Саранск, ул. Архитекторная, 15</li>
+                    <li><i class="fas fa-phone"></i> +7 (495) 123-45-67</li>
+                    <li><i class="fas fa-envelope"></i> info@archvision.ru</li>
+                    <li><i class="fas fa-clock"></i> Пн-Пт: 9:00 - 18:00</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>© 2025 Arch Vision Design. Все права защищены.</p>
+        </div>
+    </footer>
+
+<!-- Скрипт проверки авторизации -->
+<script>
+    const user = JSON.parse(localStorage.getItem('user'));
+    const authButtons = document.getElementById('authButtons');
+
+    if (user) {
+        // Отобразить иконку профиля
+        authButtons.innerHTML = `
+            <a href="profile.html" title="Профиль">
+                <i class="fas fa-user-circle" style="font-size: 24px; color: white;"></i>
+            </a>
+        `;
+    } else {
+        // Отобразить обычные кнопки
+        authButtons.innerHTML = `
+            <a href="vhod.html" class="auth-btn login-btn">Вход</a>
+            <a href="registre.html" class="auth-btn register-btn">Регистрация</a>
+        `;
+    }
+</script>
+
+</body>
+</html>
