@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ТРК "Sun Plaza" - Arch Vision Design</title>
+
+    <!-- Подключаем стили -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+         body {
+            overflow-x: hidden;
+            padding-top: 80px; /* Добавлено для фиксированного меню */
+        }
+
+        /* Фиксированная панель навигации */
+        .fixed-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            padding: 15px 0;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-img {
+            height: 60px;
+            width: auto;
+            margin-right: 15px;
+        }
+
+        .logo-text {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .auth-btn {
+            padding: 8px 20px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .login-btn {
+            background-color: transparent;
+            border: 2px solid white;
+            color: white;
+        }
+
+        .login-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .register-btn {
+            background-color: #4873d1;
+            border: 2px solid #4873d1;
+            color: #ffffff;
+        }
+
+        .register-btn:hover {
+            background-color: #3a62b0;
+            border-color: #3a62b0;
+        }
+
+        /* Шапка с картинкой */
+        .header {
+            position: relative;
+            height: 50vh;
+            width: 100%;
+            overflow: hidden;
+            margin-top: -80px; /* Компенсация фиксированного меню */
+        }
+
+        .header-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+
+        /* Основной контент */
+        .about-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding:  20px 45px;
+        }
+
+        /* Блок "О компании" */
+        .about-section {
+            display: flex;
+            align-items: center;
+            gap: 65px;
+            margin-bottom: 70px;
+        }
+
+        .about-text {
+            flex: 1;
+        }
+
+        .about-image {
+            flex: 1;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .section-title {
+            color: #4873d1;
+            font-size: 2.2rem;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 80px;
+            height: 3px;
+            background: #4873d1;
+        }
+
+        /* Блок "Наша команда" */
+        .team-section {
+            margin-bottom: 60px;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .team-member {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .team-member:hover {
+            transform: translateY(-10px);
+        }
+
+        .member-photo {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .member-info {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .member-name {
+            font-size: 1.3rem;
+            color: #4873d1;
+            margin-bottom: 5px;
+        }
+
+        .member-position {
+            color: #666;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+
+        /* Горизонтальное меню в шапке */
+        .header-menu {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.432);
+            padding: 15px 0;
+        }
+
+        .menu-list {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            flex-wrap: wrap;
+        }
+
+        .menu-list li {
+            margin: 0 15px;
+        }
+
+        .menu-list a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: color 0.3s;
+        }
+
+        .menu-list a:hover {
+            color: #4873d1;
+        }
+
+        .header-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.4);
+            padding: 0 20px;
+        }
+
+        .header-title {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .header-subtitle {
+            font-size: 1.5rem;
+            max-width: 800px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+
+        /* Подвал */
+        footer {
+            background: #1a1a1a;
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            text-align: left;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .footer-logo-img {
+            height: 40px;
+            margin-right: 15px;
+        }
+
+        .footer-logo-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .footer-links h3 {
+            color: #4873d1;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .copyright {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+            color: #999;
+        }
+
+        .article {
+            text-align: justify;
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 446px;
+            margin: 0 auto;
+        }
+
+        .article p {
+            text-indent: 35px; /* Отступ первой строки */
+            margin-bottom: 1em;
+        }
+
+        .article p:first-child {
+            text-indent: 0; /* Убираем отступ у первого абзаца, если нужно */
+        }
+
+        .back-to-home {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .back-to-home a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #4873d1;
+            font-size: 1 rem;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .back-to-home a:hover {
+            color: #32539b;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            body {
+                padding-top: 70px;
+            }
+            
+            .fixed-nav {
+                padding: 10px 0;
+            }
+            
+            .nav-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .logo-img {
+                height: 40px;
+            }
+
+            .logo-text {
+                font-size: 1.4rem;
+            }
+
+            .auth-buttons {
+                gap: 10px;
+            }
+
+            .auth-btn {
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .about-section {
+                flex-direction: column;
+            }
+
+            .team-grid, .principles-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .menu-list a:hover {
+            color: #4873d1;
+        }
+
+        .article h2 {
+            font-size: 2.2rem;
+            color: #4873d1;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .article h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 80px;
+            height: 3px;
+            background: #4873d1;
+        }
+
+    </style>
+
+    <!-- Font Awesome для иконок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> 
+</head>
+<body>
+
+<!-- Логотип и навигация -->
+<nav class="fixed-nav">
+    <div class="nav-container">
+        <div class="logo">
+            <img src="images/logo.png" alt="ArchiVision Logo" class="logo-img">
+            <div class="logo-text">Arch Vision Design</div>
+        </div>
+        <div class="auth-buttons" id="authButtons">
+            <!-- Кнопки будут подставлены через JS -->
+        </div>
+    </div>
+</nav>
+
+<!-- Шапка проекта -->
+<header class="header">
+    <img src="https://images.unsplash.com/photo-1487958449943-2429e8be8625?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80"
+         alt="Архитектурный фон" class="header-image">
+    <div class="header-content">
+        <h1 class="header-title">Торгово-развлекательный комплекс "Sun Plaza"</h1>
+        <p class="header-subtitle">Современный трёхуровневый торгово-развлекательный комплекс общей площадью 45 000 м² с атриумом, фуд-кортом и удобной планировкой</p>
+    </div>
+
+    <!-- Горизонтальное меню в шапке -->
+    <nav class="header-menu">
+        <ul class="menu-list">
+            <li><a href="index.html">Главная</a></li>
+            <li><a href="progekt.html">Проекты</a></li>
+            <li><a href="uslugi.html">Услуги</a></li>
+            <li><a href="onas.html">О студии</a></li>
+            <li><a href="#contacts">Контакты</a></li> 
+        </ul>
+    </nav>
+</header>
+
+<!-- Основной контент -->
+<main class="about-container">
+    <section class="about-section">
+        <div class="article">
+            <h2 class="section-title">ТРК "Sun Plaza"</h2>
+            <p>"Sun Plaza" — современный трёхуровневый торгово-развлекательный комплекс общей площадью 45 000 м², созданный специально для комфортного шопинга, отдыха и досуга всей семьей.</p>
+            <p>Первый этаж заполнен модными бутиками и сервисными центрами, второй уровень посвящён шоппингу с универмагами, детскими и взрослыми зонами, а на третьем уровне расположены игровые комнаты, кинотеатры и детские площадки. В наличии камеры хранения, пункты выдачи интернет-заказов, зарядные станции и бесплатный Wi-Fi на всех уровнях.</p>
+            <p>Этот проект органично дополняет портфолио студии Arch Vision Design, демонстрируя наш подход к созданию комфортных, технологичных и визуально привлекательных объектов.</p>
+
+            <!-- Кнопка Назад -->
+            <div class="back-to-home">
+                <a href="progekt.html"><i class="fas fa-arrow-left"></i>Вернуться к списку проектов</a>
+            </div>
+        </div>
+        <div class="about-image">
+            <img src="./images/тц.jpg" alt="Торговый центр Sun Plaza">
+        </div>
+    </section>
+</main>
+
+<!-- Подвал -->
+<footer>
+    <div class="footer-container">
+        <div class="footer-about">
+            <div class="footer-logo">
+                <img src="images/logo.png" alt="Arch Vision Design" class="footer-logo-img">
+                <div class="footer-logo-text">Arch Vision Design</div>
+            </div>
+            <p>Профессиональные архитектурные решения с 2010 года. Создаем пространства, которые вдохновляют.</p>
+        </div>
+        <div class="footer-links">
+            <h3 id="contacts">Контакты</h3>
+            <ul>
+                <li><i class="fas fa-map-marker-alt"></i> г. Саранск, ул. Архитекторная, 15</li>
+                <li><i class="fas fa-phone"></i> +7 (495) 123-45-67</li>
+                <li><i class="fas fa-envelope"></i> info@archvision.ru</li>
+                <li><i class="fas fa-clock"></i> Пн-Пт: 9:00 - 18:00</li>
+            </ul>
+        </div>
+    </div>
+    <div class="copyright">
+        <p>© 2025 Arch Vision Design. Все права защищены.</p>
+    </div>
+</footer>
+
+<!-- Скрипт проверки авторизации -->
+<script>
+    const user = JSON.parse(localStorage.getItem('user'));
+    const authButtons = document.getElementById('authButtons');
+
+    if (user) {
+        // Отобразить иконку профиля
+        authButtons.innerHTML = `
+            <a href="profile.html" title="Профиль">
+                <i class="fas fa-user-circle" style="font-size: 24px; color: white;"></i>
+            </a>
+        `;
+    } else {
+        // Отобразить обычные кнопки
+        authButtons.innerHTML = `
+            <a href="vhod.html" class="auth-btn login-btn">Вход</a>
+            <a href="registre.html" class="auth-btn register-btn">Регистрация</a>
+        `;
+    }
+</script>
+
+</body>
+</html>
