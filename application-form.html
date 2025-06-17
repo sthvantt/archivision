@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оставить заявку - ArchiVision</title>
+
+    <!-- Подключаем стили -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            overflow-x: hidden;
+            padding-top: 80px; /* Для фиксированного меню */
+        }
+
+        /* Фиксированное меню */
+        .fixed-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            padding: 15px 0;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-img {
+            height: 60px;
+            width: auto;
+            margin-right: 15px;
+        }
+
+        .logo-text {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .auth-btn {
+            padding: 8px 20px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .login-btn {
+            background-color: transparent;
+            border: 2px solid white;
+            color: white;
+        }
+
+        .login-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .register-btn {
+            background-color: #4873d1;
+            border: 2px solid #4873d1;
+            color: #ffffff;
+        }
+
+        .register-btn:hover {
+            background-color: #3a62b0;
+            border-color: #3a62b0;
+        }
+
+        /* Фон на всю страницу */
+        .fullpage-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1487958449943-2429e8be8625?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80') no-repeat center center;
+            background-size: cover;
+            z-index: -1;
+        }
+
+        .fullpage-bg::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        /* Основной контент формы */
+        .form-container {
+            max-width: 600px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .application-form {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+        }
+
+        .application-form h2 {
+            color: #333;   
+            margin-bottom: 25px;
+            text-align: center;
+            font-size: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: #4873d1;
+            outline: none;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: #4873d1;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-weight: bold;
+        }
+
+        .submit-btn:hover {
+            background-color: #32539b;
+        }
+
+        /* Ссылка назад */
+        .back-to-home {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .back-to-home a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #4873d1;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .back-to-home a:hover {
+            color: #32539b;
+        }
+    </style>
+
+    <!-- Font Awesome для иконок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> 
+</head>
+<body>
+
+<!-- Фон на всю страницу -->
+<div class="fullpage-bg"></div>
+
+<!-- Логотип и навигация -->
+<nav class="fixed-nav">
+    <div class="nav-container">
+        <div class="logo">
+            <img src="images/logo.png" alt="ArchiVision Logo" class="logo-img">
+            <div class="logo-text">Arch Vision Design</div>
+        </div>
+        <div class="auth-buttons" id="authButtons">
+            <!-- Сюда будет подставляться JS -->
+        </div>
+    </div>
+</nav>
+
+<!-- Форма заявки -->
+<section class="form-container">
+    <form class="application-form" id="applicationForm">
+        <h2>Форма для подачи заявки</h2>
+
+        <div class="form-group">
+            <label for="projectName">Название проекта или запроса</label>
+            <input type="text" id="projectName" name="projectName" required placeholder="Например: Дом мечты или Ремонт офиса">
+        </div>
+
+        <div class="form-group">
+            <label for="clientName">Ваше имя</label>
+            <input type="text" id="clientName" name="clientName" required placeholder="Введите ваше имя">
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required placeholder="Введите ваш email">
+        </div>
+
+        <div class="form-group">
+            <label for="phone">Телефон</label>
+            <input type="tel" id="phone" name="phone" placeholder="+7 (XXX) XXX-XX-XX">
+        </div>
+
+        <div class="form-group">
+            <label for="description">Описание вашего проекта</label>
+            <textarea id="description" name="description" rows="5" required placeholder="Опишите кратко ваш запрос..."></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn">Отправить заявку</button>
+
+        <!-- Кнопка Назад -->
+        <div class="back-to-home">
+            <a href="index.html"><i class="fas fa-arrow-left"></i> Вернуться на главную</a>
+        </div>
+    </form>
+</section>
+
+<!-- Простой JS для формы -->
+<script>
+    document.getElementById('applicationForm')?.addEventListener('submit', function(e) {
+        e.preventDefault();
+        alert('Заявка успешно отправлена!');
+    });
+</script>
+
+<!-- Скрипт проверки авторизации -->
+<script>
+    const user = JSON.parse(localStorage.getItem('user'));
+    const authButtons = document.getElementById('authButtons');
+
+    if (user) {
+        // Отобразить иконку профиля
+        authButtons.innerHTML = `
+            <a href="profile.html" title="Профиль">
+                <i class="fas fa-user-circle" style="font-size: 24px; color: white;"></i>
+            </a>
+        `;
+    } else {
+        // Отобразить кнопки входа и регистрации
+        authButtons.innerHTML = `
+            <a href="vhod.html" class="auth-btn login-btn">Вход</a>
+            <a href="registre.html" class="auth-btn register-btn">Регистрация</a>
+        `;
+    }
+</script>
+
+</body>
+</html>
